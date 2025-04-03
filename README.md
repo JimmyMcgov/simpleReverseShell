@@ -1,6 +1,5 @@
 Installation/usage:
-  modify line 6 to include your ip address
-  get the script onto the target machine
-  start a netcat instance to listen using 
-    nc -lnvp 4444
-  run the script on the target machine
+1) modify line 6 to include attacker's ip address
+2) get the script onto the target machine
+3) start a netcat instance to listen using nc -lnvp (whatever port you decided to use in line 6)
+4) run the script on the target machine
